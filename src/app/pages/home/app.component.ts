@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { VigenereService } from 'src/app/services/vigenere/vigenere.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'vigenere';
+  decryptedText: string = ''
+
+  constructor(private vigenere: VigenereService) {
+    this.decryptedText = this.vigenere.decypher();
+  }
 }
