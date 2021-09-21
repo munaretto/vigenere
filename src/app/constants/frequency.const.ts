@@ -56,4 +56,5 @@ export const PT_FREQUENCY_TABLE : Map<string, number> = new Map([
   ['z', 0.0047]
 ])
 
-
+export const EN_INDEX_OF_COINCIDENCE: number = 0.065;
+export const PT_INDEX_OF_COINCIDENCE: number = 0.072723;

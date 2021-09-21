@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+// import { readFileSync } from 'fs';
+// import {readSync} from 'read-text-file'
 import { VigenereService } from 'src/app/services/vigenere/vigenere.service';
 
 @Component({
@@ -9,9 +11,22 @@ import { VigenereService } from 'src/app/services/vigenere/vigenere.service';
 export class AppComponent {
   title = 'vigenere';
   decryptedText: string = ''
-  encryptedText: string = 'xlljgwfbewcw';
+  encryptedText: string = 'mlgzhpauroobz';
 
   constructor(private vigenere: VigenereService) {
-    this.decryptedText = this.vigenere.decypher(this.encryptedText);
+
+
+    // this.decryptedText = this.vigenere.decypher(this.encryptedText);
+  }
+
+  onFileChange(file : any) {
+    // console.log("FILE: ", );
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      // console.log("content: ", fileReader.result);
+      this.decryptedText = this.vigenere.decypher(fileReader.result as string)
+    }
+    fileReader.readAsText(file.target.files[0]);
+
   }
 }

@@ -14,13 +14,13 @@ export class VigenereService {
   constructor() {
 
 
-    console.log("FREQUENCY OF A: ", this.frequencyClient.getCharacterFrequency('a', Languages.EN));
-    console.log("MOST FREQUENT: ", this.frequencyClient.getMostFrequentCharacter(Languages.EN));
+    // console.log("FREQUENCY OF A: ", this.frequencyClient.getCharacterFrequency('a', Languages.EN));
+    // console.log("MOST FREQUENT: ", this.frequencyClient.getMostFrequentCharacter(Languages.EN));
 
-    console.log("FREQUENCY TABLE PT: ", Array.from(this.frequencyClient.getFrequencyTable(Languages.PT)));
-    console.log("FREQUENCY TABLE EN: ", Array.from(this.frequencyClient.getFrequencyTable(Languages.EN)));
+    // console.log("FREQUENCY TABLE PT: ", Array.from(this.frequencyClient.getFrequencyTable(Languages.PT)));
+    // console.log("FREQUENCY TABLE EN: ", Array.from(this.frequencyClient.getFrequencyTable(Languages.EN)));
 
-    console.log("MAX KEY SIZE: ", this.frequencyClient.maxKeySize);
+    // console.log("MAX KEY SIZE: ", this.frequencyClient.maxKeySize);
 
 
 
@@ -33,10 +33,8 @@ export class VigenereService {
   }
 
   private getKeyLength(encryptedText: string) : number {
+    console.log("1. Obtendo tamanho da chave...");
     const indexOfCoincidenceMap : Map<number, IocEntryModel> = new Map()
-    console.log("ENCRYPTED TEXT: ", encryptedText);
-
-
 
     for (let i = 1; i <= this.frequencyClient.maxKeySize; i++) {
       for (let j = 0; j < i; j++) {
@@ -50,41 +48,26 @@ export class VigenereService {
         // desconsidera cadeias de caracteres muito pequenas
         if (substring.length < 3) continue;
 
-        console.log(`${i} - ${j}: ${substring}`);
+        // console.log(`${i} - ${j}: ${substring}`);
 
         // calcula o indice de coincidencia pra substring
         const substrIoC = this.getIndexOfCoincidenceFromString(substring);
 
         // ignora indice de coincidencia se for zero
-        // if (substrIoC === 0) continue;
+        if (substrIoC === 0) continue;
 
-        if (indexOfCoincidenceMap.has(i)) {indexOfCoincidenceMap.get(i)!.add(substring);}
-        else {indexOfCoincidenceMap.set(i, new IocEntryModel([substring]))}
+        if (indexOfCoincidenceMap.has(i)) {indexOfCoincidenceMap.get(i)!.add(substring, substrIoC);}
+        else {indexOfCoincidenceMap.set(i, new IocEntryModel([substring], [substrIoC]))}
       }
-
-
-      console.log("MAP: ", indexOfCoincidenceMap);
-
-
-
     }
+
+    console.log("MAP: ", indexOfCoincidenceMap);
     return 0;
   }
 
-  // xlljgwfbewcw
-
-  // i = 2
-
-  // 2 - 0 = x l g f e c
-  // 2 - 1 = l j w b w w
-
-  /**
-   *
-   * 3 - 0 = x j f w
-   * 3 - 1 = l g b c
-   * 3 - 2 = l w e w
-   */
   private concatNthCharFromString(nthIndex: number, string: string): string {
+    console.log("Obtendo substring...");
+
     let finalString = '';
     for (let index = 0; index < string.length; index += nthIndex) {
       finalString += string.charAt(index)
@@ -93,6 +76,28 @@ export class VigenereService {
   }
 
   private getIndexOfCoincidenceFromString(string: string): number {
-    return 0;
+    const substringLenght = string.length;
+    const letterFrequencies: Map<string, number> = new Map;
+
+    string.split('').forEach((char:string) => {
+      if (letterFrequencies.has(char)) {
+        letterFrequencies.set(char, letterFrequencies.get(char)! + 1)
+      }
+      else {
+        letterFrequencies.set(char, 1)
+      }
+    });
+
+    // console.log(letterFrequencies);
+
+
+    let sum = 0;
+    Array.from(letterFrequencies.values()).forEach((frequency: number) => {
+      // console.log("FREQ: ", frequency);
+
+      sum += frequency * (frequency - 1)
+    });
+
+    return sum / (substringLenght * (substringLenght - 1))
   }
 }
