@@ -1,6 +1,7 @@
 export class IocEntryModel {
   private _substrings: string[];
   private _substrings_ioc: number[];
+  private _ioc_avg: number = 0;
 
   constructor(subs: string[], subs_ioc: number[]) {
     this._substrings = subs;
@@ -8,7 +9,11 @@ export class IocEntryModel {
   }
 
   get iocSubstrAverage() {
-    return 2;
+    return this._ioc_avg
+  }
+
+  calculateAvgIoC() {
+    this._ioc_avg = this._substrings_ioc.reduce((a, b) => (a + b)) / this._substrings_ioc.length;
   }
 
   get substrings() {

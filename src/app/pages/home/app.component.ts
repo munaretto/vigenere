@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-// import { readFileSync } from 'fs';
-// import {readSync} from 'read-text-file'
 import { VigenereService } from 'src/app/services/vigenere/vigenere.service';
 
 @Component({
@@ -12,6 +10,7 @@ export class AppComponent {
   title = 'vigenere';
   decryptedText: string = ''
   encryptedText: string = 'mlgzhpauroobz';
+  customPassword: string = '';
 
   constructor(private vigenere: VigenereService) {
 

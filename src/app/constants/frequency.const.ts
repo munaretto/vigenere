@@ -58,3 +58,4 @@ export const PT_FREQUENCY_TABLE : Map<string, number> = new Map([
 
 export const EN_INDEX_OF_COINCIDENCE: number = 0.065;
 export const PT_INDEX_OF_COINCIDENCE: number = 0.072723;
+export const MARGIN_OF_ERROR: number = 0.01;
