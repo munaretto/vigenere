@@ -1,7 +1,7 @@
 import { keyframes } from '@angular/animations';
 import { Injectable } from '@angular/core';
 import { concat } from 'rxjs';
-import { MARGIN_OF_ERROR, PT_FREQUENCY_TABLE, PT_INDEX_OF_COINCIDENCE } from 'src/app/constants/frequency.const';
+import { ALPHABET, ASCII_TABLE_LOWERCASE, MARGIN_OF_ERROR, PT_FREQUENCY_TABLE, PT_INDEX_OF_COINCIDENCE } from 'src/app/constants/frequency.const';
 import { Languages } from 'src/app/enums/languages.enum';
 import { IocEntryModel } from 'src/app/models/ioc-entry.model';
 import { Frequency } from 'src/app/utils/frequency.utils';
@@ -26,35 +26,54 @@ export class VigenereService {
   decypher(encryptedText: string) : string {
     this.reset();
     console.log("1. Obtendo tamanho da chave...");
-    const keyLenght = this.getKeyLength(encryptedText);
-    console.log("  > Tamanho da chave: ", keyLenght);
+    const keyLength = this.getKeyLength(encryptedText);
+    console.log("  > Tamanho da chave: ", keyLength);
     console.log("2. Obtendo caracteres da chave...");
-    const password = this.getPasswordCharacters(keyLenght);
+    const password = this.getPasswordCharacters(keyLength);
     console.log("  > Chave: ", password);
     console.log("3. Tentando decifrar o texto cifrado...");
-    const plainText = this.decypherText();
+    const plainText = this.decypherText(encryptedText, password);
     console.log("  > Texto decifrado: ", plainText);
 
     return plainText;
   }
 
-  private decypherText(): string {
-    return ''
+  private mod(n: number, m: number) {
+    return ((n % m) + m) % m;
   }
 
+  private decypherText(encryptedText: string, password: string): string {
+    let decryptedText = '';
+
+    for (let index = 0; index < encryptedText.length; index++) {
+      const dif = encryptedText[index].charCodeAt(0) - password[this.mod(index,password.length)].charCodeAt(0)
+      decryptedText += ALPHABET.get(this.mod(dif,26))
+    }
+    return decryptedText;
+  }
+
+  /**
+   *
+   * @param keyLength
+   * @returns
+   */
   private getPasswordCharacters(keyLength: number): string {
     const mapEntry = this.indexOfCoincidenceMap.get(keyLength)!;
     let password = '';
     mapEntry.substrings.forEach((substring: string) => {
       const mostCommonChars = this.findTwoMostFrequentCharacters(substring)
-
       password += mostCommonChars.second[0]
     })
     return password;
   }
 
+  /**
+   * Dado uma string, este método tem como função encontrar os dois caracteres mais frequentes
+   *
+   * @param string a string que se deseja analisar
+   * @returns um objeto contendo os dois caracteres mais frequentes da string
+   */
   private findTwoMostFrequentCharacters(string: string): {first: any[], second: any[]} {
-    const substringLenght = string.length;
     const letterFrequencies: Map<string, number> = new Map;
 
     string.split('').forEach((char:string) => {
@@ -126,10 +145,16 @@ export class VigenereService {
     return finalString;
   }
 
+  /**
+   * Esta função tem como objetivo pgar o indice de coincidencia para a string fornecida
+   * @param string string que se deseja saber o IoC
+   * @returns o índice de coincidencia da string
+   */
   private getIndexOfCoincidenceFromString(string: string): number {
-    const substringLenght = string.length;
+    const substringLength = string.length;
     const letterFrequencies: Map<string, number> = new Map;
 
+    // conta as ocorrencias de cada char em um map
     string.split('').forEach((char:string) => {
       if (letterFrequencies.has(char)) {
         letterFrequencies.set(char, letterFrequencies.get(char)! + 1)
@@ -144,6 +169,6 @@ export class VigenereService {
       sum += frequency * (frequency - 1)
     });
 
-    return sum / (substringLenght * (substringLenght - 1))
+    return sum / (substringLength * (substringLength - 1))
   }
 }
