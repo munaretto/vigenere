@@ -1,27 +1,14 @@
-# Vigenere
+# Vigenère
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.0.
+Este projeto foi construído em Angular e tem como objetivo explorar o processo quebra de um texto cifrado utilizando a Cifra de Vigenère sem saber a chave previamente.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Para executar a aplicação
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. Tenha certeza de que ambos **NodeJs** e **npm** estão instalados no seu ambiente
+2. Clone o repositório do projeto utilizando ```git clone https://github.com/munaretto/vigenere.git``` ou ```git clone git@github.com:munaretto/vigenere.git```
+3. Instale as dependências do projeto através do comando ```npm i```
+4. Inicialize a aplicação com o comando ```npm start```
+5. Abra o navegador em ```localhost:4200``` e pressione ```ctrl + shift + i``` para abrir o console
+6. Clique em "Escolher arquivo" e selecione um dos textos cifrados em ```src/assets/encrypted```
+7. Aguarde enquanto a aplicação decifra o texto. No console aparecerão o tamanho da chave, seus caracteres e o texto cifrado.
